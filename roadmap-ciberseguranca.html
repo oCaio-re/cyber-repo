@@ -1,0 +1,583 @@
+<title>Roadmap de Cibersegurança</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: manual de campo — cabeçalho com linha do tempo de 6 fases, depois cada fase como um bloco de 3 colunas (estudar / praticar / construir) */
+:root {
+  --bg: #F2F4F7;
+  --surface: #FFFFFF;
+  --ink: #15202B;
+  --muted: #566472;
+  --line: #D6DDE4;
+  --accent: #2346C4;
+  --accent-soft: #E3E9FB;
+  --flag: #A85A07;
+  --flag-soft: #FBEBD6;
+  --ok: #1C7A4A;
+  --font-display: "Familjen Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E141A; --surface: #151D26; --ink: #E3E9EF; --muted: #93A1AE; --line: #283440;
+    --accent: #8AA4FF; --accent-soft: #1C2747; --flag: #F2A950; --flag-soft: #33240F; --ok: #5BCB8F;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E141A; --surface: #151D26; --ink: #E3E9EF; --muted: #93A1AE; --line: #283440;
+  --accent: #8AA4FF; --accent-soft: #1C2747; --flag: #F2A950; --flag-soft: #33240F; --ok: #5BCB8F;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: 15px; line-height: 1.6;
+}
+.wrap {
+  max-width: 1120px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 48px 72px;
+  display: grid; gap: 56px;
+}
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.15; }
+h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: clamp(1.4rem, 3vw, 1.9rem); font-weight: 700; }
+h3 { font-size: 0.78rem; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.09em; color: var(--muted); font-weight: 600; }
+p { margin: 0; }
+a { color: var(--accent); text-underline-offset: 2px; }
+a:focus-visible, input:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+code, .mono { font-family: var(--font-mono); font-size: 0.86em; }
+code { background: var(--accent-soft); padding: 1px 5px; border-radius: 3px; }
+ul { margin: 0; padding-left: 1.1em; display: grid; gap: 4px; }
+
+/* ---------- header ---------- */
+header { display: grid; gap: 20px; }
+.prompt { font-family: var(--font-mono); font-size: 0.85rem; color: var(--muted); }
+.prompt b { color: var(--accent); font-weight: 600; }
+.lede { max-width: 64ch; font-size: 1.06rem; color: var(--muted); }
+.lede strong { color: var(--ink); font-weight: 600; }
+.overall { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; font-family: var(--font-mono); font-size: 0.85rem; }
+.bar { height: 8px; background: var(--line); border-radius: 99px; overflow: hidden; flex: 1 1 200px; max-width: 360px; }
+.bar > i { display: block; height: 100%; width: 0; background: var(--ok); transition: width .3s ease; }
+
+/* ---------- timeline ---------- */
+.timeline { overflow-x: auto; }
+.tl { display: grid; grid-template-columns: repeat(12, minmax(56px, 1fr)); gap: 6px 0; min-width: 680px; font-family: var(--font-mono); font-size: 0.75rem; }
+.tl .m { color: var(--muted); border-left: 1px solid var(--line); padding-left: 6px; }
+.tl a { text-decoration: none; color: var(--ink); background: var(--accent-soft); padding: 6px 8px; border-radius: 4px; margin-right: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tl a:hover { background: var(--accent); color: var(--surface); }
+
+/* ---------- generic section ---------- */
+section { display: grid; gap: 20px; scroll-margin-top: 16px; }
+.sec-head { display: grid; gap: 6px; }
+.sec-head p { color: var(--muted); max-width: 70ch; }
+
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 20px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+
+/* ---------- phase ---------- */
+.phase { border-top: 2px solid var(--ink); padding-top: 22px; }
+.phase-top { display: flex; flex-wrap: wrap; gap: 10px 24px; align-items: baseline; justify-content: space-between; }
+.phase-title { display: flex; gap: 14px; align-items: baseline; }
+.phase-num { font-family: var(--font-mono); font-size: 0.9rem; color: var(--accent); font-weight: 600; }
+.phase-meta { font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+.phase-meta .bar { width: 120px; flex: none; height: 6px; }
+.goal { max-width: 72ch; color: var(--muted); }
+.goal strong { color: var(--ink); font-weight: 600; }
+
+.cols { display: grid; grid-template-columns: 1.05fr 1.2fr 1fr; gap: 16px; }
+@media (max-width: 900px) { .cols { grid-template-columns: 1fr; } }
+.col { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 18px; display: grid; gap: 12px; align-content: start; min-width: 0; }
+.col.project { background: var(--flag-soft); border-color: transparent; }
+.col.project h3 { color: var(--flag); }
+.res { font-size: 0.88rem; border-top: 1px dashed var(--line); padding-top: 10px; display: grid; gap: 4px; }
+.res span { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+.col.project .res { border-top-color: color-mix(in srgb, var(--flag) 35%, transparent); }
+
+/* checklist */
+.check { list-style: none; padding: 0; display: grid; gap: 8px; }
+.check label { display: grid; grid-template-columns: 18px 1fr; gap: 10px; align-items: start; cursor: pointer; }
+.check input { width: 16px; height: 16px; margin: 4px 0 0; accent-color: var(--ok); }
+.check input:checked + span { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--line); }
+.check .tag { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); }
+
+.proj-name { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; }
+.deliver { font-size: 0.88rem; }
+
+/* tables */
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 0.9rem; }
+th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; }
+tr:last-child td { border-bottom: none; }
+.pill { display: inline-block; font-family: var(--font-mono); font-size: 0.72rem; padding: 2px 8px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); white-space: nowrap; }
+.pill.blue { background: var(--accent-soft); }
+.pill.red { background: var(--flag-soft); color: var(--flag); }
+
+/* week */
+.week { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+.day { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 14px; display: grid; gap: 4px; }
+.day b { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+
+.rules { border: 1px solid var(--flag); background: var(--surface); padding: 18px 20px; border-radius: 6px; display: grid; gap: 8px; }
+.rules strong { color: var(--flag); }
+
+.reset { justify-self: start; font-family: var(--font-mono); font-size: 0.78rem; background: none; border: 1px solid var(--line); color: var(--muted); padding: 6px 12px; border-radius: 4px; cursor: pointer; }
+.reset:hover { color: var(--ink); border-color: var(--muted); }
+.reset[data-armed] { color: var(--flag); border-color: var(--flag); }
+footer { color: var(--muted); font-size: 0.85rem; display: grid; gap: 10px; }
+
+@media (prefers-reduced-motion: reduce) { .bar > i { transition: none; } }
+</style>
+
+<div class="wrap">
+
+<header>
+  <p class="prompt"><b>aluno@lab</b>:~$ ./roadmap --nivel iniciante --duracao 12m</p>
+  <h1>Roadmap de Cibersegurança</h1>
+  <p class="lede">Um plano de <strong>12 meses</strong>, com cerca de <strong>8 a 10 horas por semana</strong>, que vai de "nunca abri um terminal" até ter um portfólio com projetos de ataque e defesa. Cada fase tem três partes: <strong>o que estudar</strong>, <strong>exercícios práticos</strong> (marque conforme concluir, o progresso fica salvo neste navegador) e <strong>um projeto</strong> para colocar no GitHub.</p>
+  <div class="overall">
+    <span>Progresso geral</span>
+    <div class="bar" aria-hidden="true"><i id="bar-all"></i></div>
+    <span id="txt-all">0 de 0</span>
+  </div>
+</header>
+
+<section aria-labelledby="t-tl">
+  <div class="sec-head">
+    <h3 id="t-tl">Linha do tempo · meses</h3>
+  </div>
+  <div class="timeline">
+    <div class="tl">
+      <span class="m">1</span><span class="m">2</span><span class="m">3</span><span class="m">4</span><span class="m">5</span><span class="m">6</span><span class="m">7</span><span class="m">8</span><span class="m">9</span><span class="m">10</span><span class="m">11</span><span class="m">12</span>
+      <a href="#fase-1" style="grid-column: 1 / span 2">01 Fundamentos de TI</a>
+      <a href="#fase-2" style="grid-column: 3 / span 2">02 Princípios de segurança</a>
+      <a href="#fase-3" style="grid-column: 5 / span 2">03 Segurança web</a>
+      <a href="#fase-4" style="grid-column: 7 / span 2">04 Blue team</a>
+      <a href="#fase-5" style="grid-column: 9 / span 2">05 Pentest</a>
+      <a href="#fase-6" style="grid-column: 11 / span 2">06 Especialização</a>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="t-lab">
+  <div class="sec-head">
+    <h2 id="t-lab">Antes de começar: monte seu laboratório</h2>
+    <p>Todo o treino prático acontece em máquinas suas ou em plataformas feitas para isso. Reserve a primeira semana para deixar o ambiente pronto.</p>
+  </div>
+  <div class="grid-2">
+    <div class="panel">
+      <h3>Ambiente local</h3>
+      <ul>
+        <li><strong>Hipervisor:</strong> VirtualBox ou VMware Workstation (gratuitos). Você já usa Linux, então KVM/virt-manager também serve.</li>
+        <li><strong>VM atacante:</strong> Kali Linux ou Parrot OS.</li>
+        <li><strong>VMs alvo:</strong> Metasploitable 2, OWASP Juice Shop (via Docker), DVWA.</li>
+        <li><strong>Rede:</strong> configure uma rede "host-only" ou NAT interna para as VMs vulneráveis nunca ficarem expostas à internet.</li>
+        <li><strong>Snapshots:</strong> tire um antes de cada exercício para voltar ao estado limpo.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Contas e ferramentas</h3>
+      <ul>
+        <li><a href="https://tryhackme.com" target="_blank" rel="noopener">TryHackMe</a>: trilhas guiadas, ótimo para começar.</li>
+        <li><a href="https://academy.hackthebox.com" target="_blank" rel="noopener">HTB Academy</a> e <a href="https://www.hackthebox.com" target="_blank" rel="noopener">Hack The Box</a>: módulos e máquinas mais desafiadoras.</li>
+        <li><a href="https://portswigger.net/web-security" target="_blank" rel="noopener">PortSwigger Web Security Academy</a>: segurança web, gratuito.</li>
+        <li>GitHub para o portfólio e um app de notas (Obsidian, Notion ou Markdown puro) para seus write-ups.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="rules">
+    <p><strong>Regra número um: só teste o que você tem autorização escrita para testar.</strong></p>
+    <p>No Brasil, invadir dispositivo alheio é crime (Lei 12.737/2012, art. 154-A do Código Penal). Use apenas seu laboratório, plataformas de CTF e programas de bug bounty, respeitando sempre o escopo publicado.</p>
+  </div>
+</section>
+
+<!-- ================= FASE 1 ================= -->
+<section class="phase" id="fase-1" data-phase="1">
+  <div class="phase-top">
+    <div class="phase-title"><span class="phase-num">01</span><h2>Fundamentos de TI</h2></div>
+    <div class="phase-meta"><span>meses 1–2</span><div class="bar" aria-hidden="true"><i></i></div><span class="ph-txt"></span></div>
+  </div>
+  <p class="goal"><strong>Objetivo:</strong> entender como computadores, sistemas operacionais e redes funcionam. Não dá para proteger ou atacar algo que você não entende.</p>
+  <div class="cols">
+    <div class="col">
+      <h3>Estudar</h3>
+      <ul>
+        <li><strong>Linux:</strong> sistema de arquivos, permissões (<code>chmod</code>, <code>chown</code>), usuários, processos, pacotes, <code>grep</code>/<code>find</code>/pipes, SSH.</li>
+        <li><strong>Redes:</strong> modelo OSI e TCP/IP, endereçamento IP e sub-redes, TCP vs UDP, portas, DNS, DHCP, HTTP/HTTPS, NAT.</li>
+        <li><strong>Windows:</strong> usuários e grupos, registro, serviços, PowerShell básico, Event Viewer.</li>
+        <li><strong>Programação:</strong> Python (variáveis, loops, funções, arquivos, <code>requests</code>, <code>socket</code>) e Bash básico.</li>
+      </ul>
+      <div class="res"><span>Recursos</span>
+        <a href="https://linuxjourney.com" target="_blank" rel="noopener">Linux Journey</a>
+        <a href="https://tryhackme.com/path/outline/presecurity" target="_blank" rel="noopener">TryHackMe: Pre Security</a>
+        <a href="https://automatetheboringstuff.com" target="_blank" rel="noopener">Automate the Boring Stuff with Python</a>
+        <a href="https://www.netacad.com" target="_blank" rel="noopener">Cisco NetAcad: Networking Basics</a>
+      </div>
+    </div>
+    <div class="col">
+      <h3>Praticar</h3>
+      <ul class="check">
+        <li><label><input type="checkbox" data-id="f1-bandit"><span>Concluir os níveis 0 a 20 do <a href="https://overthewire.org/wargames/bandit/" target="_blank" rel="noopener">OverTheWire Bandit</a> <span class="tag">· terminal Linux</span></span></label></li>
+        <li><label><input type="checkbox" data-id="f1-wireshark"><span>Capturar no Wireshark o próprio tráfego ao abrir um site e identificar o handshake TCP, a consulta DNS e a requisição HTTP</span></label></li>
+        <li><label><input type="checkbox" data-id="f1-subnet"><span>Resolver 30 exercícios de sub-rede (ex.: subnettingpractice.com) até fazer de cabeça um /26</span></label></li>
+        <li><label><input type="checkbox" data-id="f1-ps"><span>Listar serviços, usuários e processos no Windows usando só PowerShell</span></label></li>
+        <li><label><input type="checkbox" data-id="f1-py"><span>Escrever 5 scripts Python curtos: ler arquivo, contar palavras, chamar uma API, renomear arquivos em lote, abrir um socket</span></label></li>
+      </ul>
+    </div>
+    <div class="col project">
+      <h3>Projeto</h3>
+      <p class="proj-name">Scanner de portas em Python</p>
+      <p>Um script que recebe um IP e um intervalo de portas, testa conexões TCP com <code>socket</code> e mostra as portas abertas. Depois, adicione threads para ficar mais rápido e tente pegar o banner do serviço.</p>
+      <div class="res deliver"><span>Entrega</span>Repositório no GitHub com README explicando como usar e o que você aprendeu sobre o handshake TCP.</div>
+      <ul class="check">
+        <li><label><input type="checkbox" data-id="f1-proj"><span>Projeto concluído e publicado</span></label></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FASE 2 ================= -->
+<section class="phase" id="fase-2" data-phase="2">
+  <div class="phase-top">
+    <div class="phase-title"><span class="phase-num">02</span><h2>Princípios de segurança</h2></div>
+    <div class="phase-meta"><span>meses 3–4</span><div class="bar" aria-hidden="true"><i></i></div><span class="ph-txt"></span></div>
+  </div>
+  <p class="goal"><strong>Objetivo:</strong> aprender o vocabulário e os conceitos que aparecem em qualquer área da segurança, da tríade CIA ao MITRE ATT&amp;CK.</p>
+  <div class="cols">
+    <div class="col">
+      <h3>Estudar</h3>
+      <ul>
+        <li><strong>Conceitos:</strong> tríade CIA, ameaça vs vulnerabilidade vs risco, defesa em profundidade, menor privilégio.</li>
+        <li><strong>Criptografia:</strong> hash (SHA-256, bcrypt), criptografia simétrica (AES) e assimétrica (RSA), TLS, certificados, assinaturas digitais.</li>
+        <li><strong>Autenticação:</strong> senhas, MFA, OAuth/SSO, como senhas são armazenadas e quebradas.</li>
+        <li><strong>Ataques comuns:</strong> phishing, malware, ransomware, engenharia social, força bruta, MITM.</li>
+        <li><strong>Frameworks:</strong> MITRE ATT&amp;CK, Cyber Kill Chain, OWASP Top 10, LGPD.</li>
+      </ul>
+      <div class="res"><span>Recursos</span>
+        <a href="https://www.professormesser.com/security-plus/sy0-701/sy0-701-video/sy0-701-comptia-security-plus-course/" target="_blank" rel="noopener">Professor Messer: Security+ (vídeos gratuitos)</a>
+        <a href="https://tryhackme.com/path/outline/cybersecurity101" target="_blank" rel="noopener">TryHackMe: Cyber Security 101</a>
+        <a href="https://attack.mitre.org" target="_blank" rel="noopener">MITRE ATT&amp;CK</a>
+      </div>
+    </div>
+    <div class="col">
+      <h3>Praticar</h3>
+      <ul class="check">
+        <li><label><input type="checkbox" data-id="f2-crypto"><span>Fazer a introdução e os primeiros desafios do <a href="https://cryptohack.org" target="_blank" rel="noopener">CryptoHack</a></span></label></li>
+        <li><label><input type="checkbox" data-id="f2-hashcat"><span>Gerar hashes MD5 e bcrypt de senhas fracas no seu lab e quebrá-las com <code>hashcat</code> ou <code>john</code> usando a wordlist rockyou; anotar a diferença de tempo</span></label></li>
+        <li><label><input type="checkbox" data-id="f2-gpg"><span>Criar um par de chaves GPG, cifrar e assinar um arquivo, verificar a assinatura</span></label></li>
+        <li><label><input type="checkbox" data-id="f2-tls"><span>Inspecionar o certificado TLS de 3 sites com <code>openssl s_client</code> e explicar a cadeia de confiança</span></label></li>
+        <li><label><input type="checkbox" data-id="f2-pico"><span>Resolver 15 desafios iniciantes do <a href="https://picoctf.org" target="_blank" rel="noopener">picoCTF</a> (categorias General e Cryptography)</span></label></li>
+        <li><label><input type="checkbox" data-id="f2-attack"><span>Ler um relatório público de incidente e mapear cada etapa para técnicas do ATT&amp;CK</span></label></li>
+      </ul>
+    </div>
+    <div class="col project">
+      <h3>Projeto</h3>
+      <p class="proj-name">Auditor de senhas</p>
+      <p>Ferramenta de linha de comando que avalia a força de uma senha (tamanho, entropia, padrões comuns) e consulta a API k-anonymity do Have I Been Pwned para saber se ela já vazou, sem enviar a senha completa.</p>
+      <div class="res deliver"><span>Entrega</span>Código no GitHub e um README explicando por que o k-anonymity protege a senha do usuário.</div>
+      <ul class="check">
+        <li><label><input type="checkbox" data-id="f2-proj"><span>Projeto concluído e publicado</span></label></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FASE 3 ================= -->
+<section class="phase" id="fase-3" data-phase="3">
+  <div class="phase-top">
+    <div class="phase-title"><span class="phase-num">03</span><h2>Segurança web</h2></div>
+    <div class="phase-meta"><span>meses 5–6</span><div class="bar" aria-hidden="true"><i></i></div><span class="ph-txt"></span></div>
+  </div>
+  <p class="goal"><strong>Objetivo:</strong> entender como aplicações web quebram. É a porta de entrada mais comum, tanto para pentest quanto para bug bounty e AppSec.</p>
+  <div class="cols">
+    <div class="col">
+      <h3>Estudar</h3>
+      <ul>
+        <li><strong>Como a web funciona:</strong> requisições e respostas HTTP, cookies, sessões, CORS, same-origin policy.</li>
+        <li><strong>OWASP Top 10:</strong> controle de acesso quebrado, injeção (SQLi, command injection), XSS, SSRF, falhas de autenticação, configuração insegura.</li>
+        <li><strong>Ferramentas:</strong> Burp Suite Community (proxy, Repeater, Intruder), DevTools do navegador, <code>ffuf</code>/<code>gobuster</code>.</li>
+        <li><strong>Defesa:</strong> queries parametrizadas, encoding de saída, CSP, validação de entrada.</li>
+      </ul>
+      <div class="res"><span>Recursos</span>
+        <a href="https://portswigger.net/web-security/learning-paths" target="_blank" rel="noopener">PortSwigger: Learning Paths</a>
+        <a href="https://owasp.org/www-project-top-ten/" target="_blank" rel="noopener">OWASP Top 10</a>
+        <a href="https://owasp.org/www-project-juice-shop/" target="_blank" rel="noopener">OWASP Juice Shop</a>
+      </div>
+    </div>
+    <div class="col">
+      <h3>Praticar</h3>
+      <ul class="check">
+        <li><label><input type="checkbox" data-id="f3-sqli"><span>Todos os labs "Apprentice" de SQL injection na PortSwigger Academy</span></label></li>
+        <li><label><input type="checkbox" data-id="f3-xss"><span>Labs "Apprentice" de XSS (refletido, armazenado e DOM)</span></label></li>
+        <li><label><input type="checkbox" data-id="f3-access"><span>Labs de Access Control e Authentication</span></label></li>
+        <li><label><input type="checkbox" data-id="f3-juice"><span>Resolver 20 desafios do OWASP Juice Shop rodando local via Docker</span></label></li>
+        <li><label><input type="checkbox" data-id="f3-dvwa"><span>Explorar cada vulnerabilidade do DVWA nos níveis low e medium, e ler o código-fonte do nível impossible para ver a correção</span></label></li>
+        <li><label><input type="checkbox" data-id="f3-burp"><span>Interceptar e alterar uma requisição de login no Burp; usar o Intruder para um ataque de força bruta no seu lab</span></label></li>
+      </ul>
+    </div>
+    <div class="col project">
+      <h3>Projeto</h3>
+      <p class="proj-name">App vulnerável e corrigido</p>
+      <p>Crie uma aplicação web pequena (Flask ou Express) com login, busca e comentários contendo 3 vulnerabilidades de propósito: SQLi, XSS armazenado e IDOR. Explore cada uma e depois faça um commit separado com a correção.</p>
+      <div class="res deliver"><span>Entrega</span>Repositório com duas branches (vulnerável e corrigida) e um relatório no estilo pentest: descrição, impacto, passos para reproduzir e recomendação.</div>
+      <ul class="check">
+        <li><label><input type="checkbox" data-id="f3-proj"><span>Projeto concluído e publicado</span></label></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FASE 4 ================= -->
+<section class="phase" id="fase-4" data-phase="4">
+  <div class="phase-top">
+    <div class="phase-title"><span class="phase-num">04</span><h2>Blue team: detecção e resposta</h2></div>
+    <div class="phase-meta"><span>meses 7–8</span><div class="bar" aria-hidden="true"><i></i></div><span class="ph-txt"></span></div>
+  </div>
+  <p class="goal"><strong>Objetivo:</strong> aprender a enxergar ataques nos logs e no tráfego. É onde está a maioria das vagas de entrada (analista de SOC).</p>
+  <div class="cols">
+    <div class="col">
+      <h3>Estudar</h3>
+      <ul>
+        <li><strong>Logs:</strong> Windows Event Logs (IDs 4624, 4625, 4688, 4720), Sysmon, logs do Linux (<code>auth.log</code>, journald), logs de servidor web.</li>
+        <li><strong>SIEM:</strong> Splunk ou Elastic/Kibana, buscas, dashboards, alertas.</li>
+        <li><strong>Análise de tráfego:</strong> Wireshark avançado, Zeek, Suricata/Snort.</li>
+        <li><strong>Resposta a incidentes:</strong> ciclo do NIST (preparação, detecção, contenção, erradicação, recuperação, lições aprendidas).</li>
+        <li><strong>Detecção:</strong> regras Sigma e YARA, threat intelligence, IOCs.</li>
+      </ul>
+      <div class="res"><span>Recursos</span>
+        <a href="https://tryhackme.com/path/outline/soclevel1" target="_blank" rel="noopener">TryHackMe: SOC Level 1</a>
+        <a href="https://cyberdefenders.org" target="_blank" rel="noopener">CyberDefenders</a>
+        <a href="https://www.malware-traffic-analysis.net" target="_blank" rel="noopener">Malware-Traffic-Analysis.net</a>
+        <a href="https://letsdefend.io" target="_blank" rel="noopener">LetsDefend</a>
+      </div>
+    </div>
+    <div class="col">
+      <h3>Praticar</h3>
+      <ul class="check">
+        <li><label><input type="checkbox" data-id="f4-pcap"><span>Analisar 3 exercícios do Malware-Traffic-Analysis e responder: qual host foi infectado, por qual domínio e com qual malware</span></label></li>
+        <li><label><input type="checkbox" data-id="f4-cd"><span>Resolver 5 desafios fáceis no CyberDefenders ou Blue Team Labs Online</span></label></li>
+        <li><label><input type="checkbox" data-id="f4-sysmon"><span>Instalar Sysmon numa VM Windows e encontrar no log a execução de um comando PowerShell que você mesmo rodou</span></label></li>
+        <li><label><input type="checkbox" data-id="f4-sigma"><span>Escrever 3 regras Sigma (ex.: força bruta de login, criação de usuário local, PowerShell codificado em Base64)</span></label></li>
+        <li><label><input type="checkbox" data-id="f4-ir"><span>Fazer um exercício de mesa: escrever o playbook de resposta para um e-mail de phishing reportado por um funcionário</span></label></li>
+      </ul>
+    </div>
+    <div class="col project">
+      <h3>Projeto</h3>
+      <p class="proj-name">Home SOC</p>
+      <p>Suba o <a href="https://wazuh.com" target="_blank" rel="noopener">Wazuh</a> ou o Elastic Stack numa VM, conecte um agente Windows (com Sysmon) e um Linux. Simule ataques com o <a href="https://github.com/redcanaryco/atomic-red-team" target="_blank" rel="noopener">Atomic Red Team</a> e crie alertas e um dashboard que os detectem.</p>
+      <div class="res deliver"><span>Entrega</span>Post no blog ou README com diagrama da arquitetura, capturas dos alertas e quais técnicas ATT&amp;CK você detectou e quais escaparam.</div>
+      <ul class="check">
+        <li><label><input type="checkbox" data-id="f4-proj"><span>Projeto concluído e publicado</span></label></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FASE 5 ================= -->
+<section class="phase" id="fase-5" data-phase="5">
+  <div class="phase-top">
+    <div class="phase-title"><span class="phase-num">05</span><h2>Pentest e CTFs</h2></div>
+    <div class="phase-meta"><span>meses 9–10</span><div class="bar" aria-hidden="true"><i></i></div><span class="ph-txt"></span></div>
+  </div>
+  <p class="goal"><strong>Objetivo:</strong> juntar tudo numa metodologia de ataque completa, do reconhecimento até o acesso root ou Administrador.</p>
+  <div class="cols">
+    <div class="col">
+      <h3>Estudar</h3>
+      <ul>
+        <li><strong>Metodologia:</strong> reconhecimento, enumeração, exploração, pós-exploração, relatório.</li>
+        <li><strong>Enumeração:</strong> <code>nmap</code> (<code>-sC -sV</code>), SMB, FTP, SNMP, enumeração web.</li>
+        <li><strong>Exploração:</strong> searchsploit, Metasploit, reverse shells, transferência de arquivos.</li>
+        <li><strong>Escalada de privilégio:</strong> SUID, sudo, cron, kernel (Linux); serviços, tokens, credenciais salvas (Windows).</li>
+        <li><strong>Active Directory (básico):</strong> Kerberos, enumeração com BloodHound, Kerberoasting.</li>
+      </ul>
+      <div class="res"><span>Recursos</span>
+        <a href="https://tryhackme.com/path/outline/jrpenetrationtester" target="_blank" rel="noopener">TryHackMe: Jr Penetration Tester</a>
+        <a href="https://gtfobins.github.io" target="_blank" rel="noopener">GTFOBins</a>
+        <a href="https://book.hacktricks.wiki" target="_blank" rel="noopener">HackTricks</a>
+        <a href="https://www.youtube.com/@ippsec" target="_blank" rel="noopener">IppSec (vídeos de máquinas HTB)</a>
+      </div>
+    </div>
+    <div class="col">
+      <h3>Praticar</h3>
+      <ul class="check">
+        <li><label><input type="checkbox" data-id="f5-meta"><span>Comprometer o Metasploitable 2 por pelo menos 3 caminhos diferentes</span></label></li>
+        <li><label><input type="checkbox" data-id="f5-thm"><span>Completar 10 salas de nível Easy no TryHackMe (ex.: Blue, Kenobi, Vulnversity, Pickle Rick)</span></label></li>
+        <li><label><input type="checkbox" data-id="f5-htb"><span>Resolver 5 máquinas Easy aposentadas do Hack The Box, tentando sozinho antes de ver o vídeo do IppSec</span></label></li>
+        <li><label><input type="checkbox" data-id="f5-privesc"><span>Fazer as salas de privilege escalation Linux e Windows do TryHackMe</span></label></li>
+        <li><label><input type="checkbox" data-id="f5-ctf"><span>Participar de um CTF ao vivo (veja o calendário no <a href="https://ctftime.org" target="_blank" rel="noopener">CTFtime</a>), mesmo que resolva só um desafio</span></label></li>
+      </ul>
+    </div>
+    <div class="col project">
+      <h3>Projeto</h3>
+      <p class="proj-name">Portfólio de write-ups e relatório de pentest</p>
+      <p>Documente cada máquina resolvida num write-up (só de máquinas aposentadas ou com permissão de publicação). Escolha uma delas e escreva um relatório profissional completo: sumário executivo, escopo, achados com severidade CVSS e recomendações.</p>
+      <div class="res deliver"><span>Entrega</span>Blog (GitHub Pages ou Hashnode) com pelo menos 5 write-ups e o relatório em PDF.</div>
+      <ul class="check">
+        <li><label><input type="checkbox" data-id="f5-proj"><span>Projeto concluído e publicado</span></label></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FASE 6 ================= -->
+<section class="phase" id="fase-6" data-phase="6">
+  <div class="phase-top">
+    <div class="phase-title"><span class="phase-num">06</span><h2>Especialização</h2></div>
+    <div class="phase-meta"><span>meses 11–12</span><div class="bar" aria-hidden="true"><i></i></div><span class="ph-txt"></span></div>
+  </div>
+  <p class="goal"><strong>Objetivo:</strong> escolher <strong>uma</strong> área para se aprofundar, de acordo com o que você mais gostou até aqui. Não tente fazer todas ao mesmo tempo.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Trilha</th><th>Para quem gostou de</th><th>Por onde começar</th><th>Projeto sugerido</th></tr></thead>
+      <tbody>
+        <tr><td><span class="pill red">Pentest / Red team</span></td><td>Fase 5, resolver máquinas</td><td>HTB Academy (Penetration Tester), labs de Active Directory, Hack The Box Pro Labs</td><td>Montar um laboratório de AD com 1 DC e 2 estações e documentar 3 caminhos de ataque</td></tr>
+        <tr><td><span class="pill">SOC / Detecção</span></td><td>Fase 4, investigar logs</td><td>TryHackMe SOC Level 2, Splunk Boss of the SOC, Sigma, threat hunting</td><td>Biblioteca de 15 regras de detecção testadas com Atomic Red Team</td></tr>
+        <tr><td><span class="pill">AppSec</span></td><td>Fase 3, ler código</td><td>PortSwigger nível Practitioner, revisão de código, SAST/DAST (Semgrep, ZAP), bug bounty</td><td>Pipeline de CI no GitHub Actions com Semgrep, scan de dependências e de segredos</td></tr>
+        <tr><td><span class="pill">Cloud</span></td><td>Infraestrutura e automação</td><td>Fundamentos de AWS ou Azure, IAM, <a href="http://flaws.cloud" target="_blank" rel="noopener">flAWS.cloud</a>, CloudGoat</td><td>Auditar uma conta AWS de teste com Prowler e corrigir os achados com Terraform</td></tr>
+        <tr><td><span class="pill">Malware e forense</span></td><td>Entender o "como funciona"</td><td>Assembly x86 básico, Ghidra, análise estática e dinâmica, Volatility para memória</td><td>Analisar 3 amostras do MalwareBazaar numa VM isolada e publicar os relatórios com IOCs</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="cols" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+    <div class="col">
+      <h3>Praticar</h3>
+      <ul class="check">
+        <li><label><input type="checkbox" data-id="f6-escolha"><span>Escolher a trilha e listar 3 vagas reais dessa área para ver o que pedem</span></label></li>
+        <li><label><input type="checkbox" data-id="f6-curso"><span>Concluir um curso ou trilha completa da área escolhida</span></label></li>
+        <li><label><input type="checkbox" data-id="f6-cert"><span>Agendar a primeira certificação (veja a tabela abaixo)</span></label></li>
+        <li><label><input type="checkbox" data-id="f6-comunidade"><span>Entrar numa comunidade (Discord da TryHackMe, grupos locais OWASP ou DEF CON Group, Mente Binária) e ajudar alguém</span></label></li>
+      </ul>
+    </div>
+    <div class="col project">
+      <h3>Projeto final</h3>
+      <p class="proj-name">O projeto sugerido da sua trilha</p>
+      <p>Faça o projeto da linha correspondente na tabela. Ele vira o destaque do seu portfólio e o assunto principal em entrevistas.</p>
+      <ul class="check">
+        <li><label><input type="checkbox" data-id="f6-proj"><span>Projeto concluído e publicado</span></label></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CERTS ================= -->
+<section aria-labelledby="t-cert">
+  <div class="sec-head">
+    <h2 id="t-cert">Certificações para iniciantes</h2>
+    <p>Certificação não substitui prática, mas ajuda a passar pelo filtro de RH. Escolha uma ou duas, alinhadas à trilha.</p>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Certificação</th><th>Foco</th><th>Quando fazer</th><th>Formato</th></tr></thead>
+      <tbody>
+        <tr><td><strong>ISC2 CC</strong></td><td>Conceitos gerais</td><td>Após a fase 2</td><td>Prova teórica; o treinamento oficial é gratuito</td></tr>
+        <tr><td><strong>CompTIA Security+</strong></td><td>Conceitos gerais, muito pedida em vagas</td><td>Após a fase 2 ou 4</td><td>Prova teórica com questões práticas</td></tr>
+        <tr><td><strong>eJPT</strong> (INE)</td><td>Pentest de entrada</td><td>Após a fase 5</td><td>Prova 100% prática</td></tr>
+        <tr><td><strong>BTL1</strong> ou <strong>SAL1</strong> (TryHackMe)</td><td>Blue team / SOC</td><td>Após a fase 4</td><td>Prova prática de investigação</td></tr>
+        <tr><td><strong>OSCP</strong> / <strong>HTB CPTS</strong></td><td>Pentest intermediário</td><td>Depois do roadmap, 6 a 12 meses a mais</td><td>Prova prática longa, com relatório</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ================= ROUTINE ================= -->
+<section aria-labelledby="t-week">
+  <div class="sec-head">
+    <h2 id="t-week">Uma semana típica (cerca de 9 horas)</h2>
+    <p>Constância vale mais que maratona. Uma hora por dia rende mais do que oito horas num sábado a cada duas semanas.</p>
+  </div>
+  <div class="week">
+    <div class="day"><b>Seg</b>1h de teoria: vídeo, leitura ou curso</div>
+    <div class="day"><b>Ter</b>1h de exercícios da fase</div>
+    <div class="day"><b>Qua</b>1h de teoria + anotações</div>
+    <div class="day"><b>Qui</b>1h de exercícios da fase</div>
+    <div class="day"><b>Sex</b>1h de programação (Python/Bash)</div>
+    <div class="day"><b>Sáb</b>3h no projeto ou num CTF</div>
+    <div class="day"><b>Dom</b>1h para escrever o write-up da semana e revisar</div>
+  </div>
+</section>
+
+<!-- ================= TIPS ================= -->
+<section aria-labelledby="t-tips">
+  <div class="sec-head"><h2 id="t-tips">Dicas para não travar</h2></div>
+  <div class="grid-2">
+    <div class="panel">
+      <h3>Hábitos</h3>
+      <ul>
+        <li>Escreva sobre tudo o que resolver. Explicar é o melhor teste de que você entendeu.</li>
+        <li>Fique até 30–45 minutos travado antes de olhar uma dica. Depois disso, olhe só o próximo passo, não a solução inteira.</li>
+        <li>Leia os write-ups de outras pessoas mesmo dos desafios que você resolveu: há sempre um caminho diferente.</li>
+        <li>Aprenda inglês técnico. A maior parte da documentação e das vagas melhores exigem.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Para acompanhar</h3>
+      <ul>
+        <li>Podcasts: Darknet Diaries, Security Now, Segurança Legal (em português).</li>
+        <li>Notícias: The Hacker News, BleepingComputer, Krebs on Security.</li>
+        <li>Livros: <em>The Web Application Hacker's Handbook</em>, <em>Practical Malware Analysis</em>, <em>Blue Team Handbook</em>.</li>
+        <li>Canais: John Hammond, NetworkChuck, IppSec, Papo Binário (em português).</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>O progresso marcado nas caixas fica salvo apenas neste navegador.</p>
+  <button type="button" class="reset" id="reset">Limpar progresso</button>
+</footer>
+
+</div>
+
+<script>
+(function () {
+  var KEY = "roadmap-cyber-v1";
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { state = {}; }
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('input[type="checkbox"][data-id]'));
+
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+
+  function render() {
+    var done = boxes.filter(function (b) { return b.checked; }).length;
+    document.getElementById("bar-all").style.width = (boxes.length ? done / boxes.length * 100 : 0) + "%";
+    document.getElementById("txt-all").textContent = done + " de " + boxes.length + " itens";
+    document.querySelectorAll("[data-phase]").forEach(function (ph) {
+      var bs = ph.querySelectorAll('input[type="checkbox"][data-id]');
+      var d = 0; bs.forEach(function (b) { if (b.checked) d++; });
+      ph.querySelector(".phase-meta .bar > i").style.width = (bs.length ? d / bs.length * 100 : 0) + "%";
+      ph.querySelector(".ph-txt").textContent = d + "/" + bs.length;
+    });
+  }
+
+  boxes.forEach(function (b) {
+    b.checked = !!state[b.dataset.id];
+    b.addEventListener("change", function () {
+      if (b.checked) state[b.dataset.id] = 1; else delete state[b.dataset.id];
+      save(); render();
+    });
+  });
+
+  var reset = document.getElementById("reset");
+  reset.addEventListener("click", function () {
+    if (!reset.hasAttribute("data-armed")) {
+      reset.setAttribute("data-armed", "");
+      reset.textContent = "Clique de novo para confirmar";
+      setTimeout(function () { reset.removeAttribute("data-armed"); reset.textContent = "Limpar progresso"; }, 4000);
+      return;
+    }
+    state = {}; save();
+    boxes.forEach(function (b) { b.checked = false; });
+    reset.removeAttribute("data-armed"); reset.textContent = "Limpar progresso";
+    render();
+  });
+
+  render();
+})();
+</script>
